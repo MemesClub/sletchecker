@@ -1,5 +1,5 @@
 script_authors("Memes & Hatori")
-script_description("Теперь есть дескрипшен")
+script_description("Теперь есть дескрипшен 123")
 script_version(04082022)
 
 local enable_autoupdate = true -- false to disable auto-update + disable sending initial telemetry (server, moonloader version, script version, samp nickname, virtual volume serial number)
