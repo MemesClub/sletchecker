@@ -1,6 +1,6 @@
 script_authors("Memes & Hatori")
 script_description("Теперь есть дескрипшен 1234")
-script_version('05082022')
+script_version('06082022')
 
 local enable_autoupdate = true -- false to disable auto-update + disable sending initial telemetry (server, moonloader version, script version, samp nickname, virtual volume serial number)
 local autoupdate_loaded = false
@@ -10,7 +10,7 @@ if enable_autoupdate then
     if updater_loaded then
         autoupdate_loaded, Update = pcall(Updater)
         if autoupdate_loaded then
-            Update.json_url = "https://raw.githubusercontent.com/MemesClub/sletchecker/main/version.json?token=GHSAT0AAAAAABXIA2UHTEFJOICI6SQNT24QYXJX3VQ" .. tostring(os.clock())
+            Update.json_url = "https://raw.githubusercontent.com/MemesClub/sletchecker/main/version.json?" .. tostring(os.clock())
             Update.prefix = "[" .. string.upper(thisScript().name) .. "]: "
             Update.url = "https://github.com/MemesClub/sletchecker/blob/main/sletchecker.lua"
         end
