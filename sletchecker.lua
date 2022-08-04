@@ -1,6 +1,6 @@
 script_authors("Memes & Hatori")
 script_description("Версия 060822")
-script_version('80822')
+script_version(80822)
 script_properties('Work-in-pause')
 
 local enable_autoupdate = true -- false to disable auto-update + disable sending initial telemetry (server, moonloader version, script version, samp nickname, virtual volume serial number)
@@ -43,14 +43,14 @@ local data = {
 }
 
 function main()
-   if not isSampfuncsLoaded() or not isSampLoaded() then
-      return
-  end
-  while not isSampAvailable() do
-      wait(100)
-  end
+if not isSampfuncsLoaded() or not isSampLoaded() then
+   return
+end
+while not isSampAvailable() do
+   wait(100)
+end
   
-  if autoupdate_loaded and enable_autoupdate and Update then
+if autoupdate_loaded and enable_autoupdate and Update then
    pcall(Update.check, Update.json_url, Update.prefix, Update.url)
 end
 _, id = sampGetPlayerIdByCharHandle(PLAYER_PED)
