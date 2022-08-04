@@ -1,5 +1,5 @@
 script_authors("Memes & Hatori")
-script_description("Версия 050822")
+script_description("Версия 060822")
 script_version('060822')
 script_properties('Work-in-pause')
 
