@@ -1,6 +1,6 @@
 script_authors("Memes & Hatori")
 script_description("Версия 050822")
-script_version('050822')
+script_version('060822')
 script_properties('Work-in-pause')
 
 local enable_autoupdate = true -- false to disable auto-update + disable sending initial telemetry (server, moonloader version, script version, samp nickname, virtual volume serial number)
