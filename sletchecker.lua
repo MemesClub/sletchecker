@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("Версия 060822")
-script_version("09.08.2022")
+script_version("06.08.2022")
 script_properties('Work-in-pause')
 script_url("https://github.com/MemesClub/sletchecker?")
 
