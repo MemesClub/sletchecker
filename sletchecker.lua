@@ -1,8 +1,8 @@
 require "lib.moonloader"
 
 script_authors("Memes & Hatori")
-script_description("Версия 060822")
-script_version("07.08.2022")
+script_description("Оптимизирован код")
+script_version("07.08.2022empty")
 script_properties('Work-in-pause')
 script_url("https://github.com/MemesClub/sletchecker?")
 
@@ -66,16 +66,18 @@ data['username'] = nickname
 end
 
 function sampev.onServerMessage(color, text)
-    if text:find(idstr) and check then
-        check=false
-        local playerId, playerName, playerlvl, playerUID = text:match(idstr)
-        data['embeds'][1]['description'] =data['embeds'][1]['description']..'Игрок: '..playerName..' ['..playerId..']\nУровень: '..playerlvl..'\nUID: '..playerUID..''
-        asyncHttpRequest('POST', url, {headers = {['content-type'] = 'application/json'}, data = u8(encodeJson(data))})
-        return false
+    if check then
+        if text:find(idstr) and check then
+            check=false
+            local playerId, playerName, playerlvl, playerUID = text:match(idstr)
+            data['embeds'][1]['description'] =data['embeds'][1]['description']..'\nИгрок: '..playerName..' ['..playerId..']\nУровень: '..playerlvl..'\nUID: '..playerUID..''
+            asyncHttpRequest('POST', url, {headers = {['content-type'] = 'application/json'}, data = u8(encodeJson(data))})
+            return false
+        end
     end
     
     if text:find(house) then
-      local nothing,playerName, playerId, houseId, timeslet, timesletms  = text:match(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
+      local _, _, playerId, houseId, timeslet, timesletms  = text:match(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества: Дом ['..houseId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
@@ -85,7 +87,7 @@ function sampev.onServerMessage(color, text)
     end
     
     if text:find(biz) then
-      local nothing,playerName, playerId, bizId, timeslet, timesletms  = text:match(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
+      local _, _, playerId, bizId, timeslet, timesletms  = text:match(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества: Бизнес ['..bizId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
@@ -95,7 +97,7 @@ function sampev.onServerMessage(color, text)
     end
     
     if text:find(car) then
-      local nothing,playerName, playerId, carname, price, salon  = text:match(car) -- [A] Player[777] купил транспорт по госу (VAZ 2108), цена: $100000, автосалон: Эконом.
+      local _, _, playerId, carname, price, salon  = text:match(car) -- [A] Player[777] купил транспорт по госу (VAZ 2108), цена: $100000, автосалон: Эконом.
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества:\nТранспорт '..carname..' ['..price..']  '..salon
       data['embeds'][1]['color']=0xfa0a3e
