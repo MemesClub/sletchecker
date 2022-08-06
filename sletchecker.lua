@@ -68,12 +68,12 @@ end
 function sampev.onServerMessage(color, text)
     if check then
         if text:find(idstr) and check then
-            check=false
             local playerId, playerName, playerlvl, playerUID = text:match(idstr)
             data['embeds'][1]['description'] =data['embeds'][1]['description']..'\nИгрок: '..playerName..' ['..playerId..']\nУровень: '..playerlvl..'\nUID: '..playerUID..''
-            asyncHttpRequest('POST', url, {headers = {['content-type'] = 'application/json'}, data = u8(encodeJson(data))})
-            return false
+            asyncHttpRequest('POST', url, {headers = {['content-type'] = 'application/json'}, data = u8(encodeJson(data))})  
         end
+        check=false
+        return false
     end
     
     if text:find(house) then
