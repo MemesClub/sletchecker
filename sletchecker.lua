@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("ќптимизирован код")
-script_version("08.08.2022")
+script_version("08.08.2022new")
 script_properties('Work-in-pause')
 script_url("https://github.com/MemesClub/sletchecker?")
 
@@ -24,11 +24,12 @@ end
 
 local idstr = '%[(%d+)%] (.+) %| ”ровень: (%d+) %| UID: (%d+)' 
 -- [00:39:52] [1] Cursed_Gitlerov | ”ровень: 0 | UID: -1 | packetloss: 0.00 (мобильный лаунчер)
-local house = '(.+) (.+)%[(%d+)%] купил дом ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
+local house = '(.+)([a-zA-Z_]+)%[(%d+)%] купил дом ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
 -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
 -- [21:00:08] Beautiful_Nastiness [803] купил дом ID: 774 по гос. цене за 1.88 ms! (old)
-local biz = '(.+) (.+)%[(%d+)%] купил бизнес ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
-local car = '(.+) (.+)%[(%d+)%] купил транспорт по госу %((.+)%), цена: (.+), автосалон: (.+)'
+local biz = '(.+)([a-zA-Z_]+)%[(%d+)%] купил бизнес ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
+local car = '(.+)([a-zA-Z_]+)%[(%d+)%] купил транспорт по госу %((.+)%), цена: (.+), автосалон: (.+)'
+--[01:54:46] [A] Ali_Mortimer[253] купил транспорт по госу (Elegant), цена: $460,000, автосалон: Ёконом.
 
 local encoding = require 'encoding' -- подключаем дл€ корректной отправки русских букв
 encoding.default = 'CP1251'
@@ -72,7 +73,7 @@ function sampev.onServerMessage(color, text)
     if check then
         if text:find(idstr) and check then
             local playerId, playerName, playerlvl, playerUID = text:match(idstr)
-            data['embeds'][1]['description'] =data['embeds'][1]['description']..'\n»грок: '..playerName..' ['..playerId..']\n”ровень: '..playerlvl..'\nUID: '..playerUID..''
+            data['embeds'][1]['description'] =data['embeds'][1]['description']..'»грок: '..playerName..' ['..playerId..']\n”ровень: '..playerlvl..'\nUID: '..playerUID..''
             asyncHttpRequest('POST', url, {headers = {['content-type'] = 'application/json'}, data = u8(encodeJson(data))})  
         end
         check=false
@@ -86,27 +87,20 @@ function sampev.onServerMessage(color, text)
       data['embeds'][1]['color']=0x9b59b6
       send_rpc_command('/id '..playerId)
       check=true
-      return
-    end
-    
-    if text:find(biz) then
+    elseif text:find(biz) then
       local _, _, playerId, bizId, timeslet, timesletms, _  = text:match(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = '“ип имущества: Ѕизнес ['..bizId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
       send_rpc_command('/id '..playerId)
       check=true
-      return
-    end
-    
-    if text:find(car) then
+    elseif text:find(car) then
       local _, _, playerId, carname, price, salon  = text:match(car) -- [A] Player[777] купил транспорт по госу (VAZ 2108), цена: $100000, автосалон: Ёконом.
       playerId=tonumber(playerId)
-      data['embeds'][1]['description'] = '“ип имущества:\n“ранспорт '..carname..' ['..price..']  '..salon
+      data['embeds'][1]['description'] = '“ип имущества:\n“ранспорт '..carname..' ['..price..']  '..salon..'\n'
       data['embeds'][1]['color']=0xfa0a3e
       send_rpc_command('/id '..playerId)
       check=true
-      return
     end
 end
 
