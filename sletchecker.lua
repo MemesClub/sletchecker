@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("Оптимизирован код")
-script_version("08.08.2022new2")
+script_version("08.08.2022new3")
 script_properties('Work-in-pause')
 script_url("https://github.com/MemesClub/sletchecker?")
 
@@ -84,22 +84,22 @@ function sampev.onServerMessage(color, text)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества: Дом ['..houseId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
-      send_rpc_command('/id '..playerId)
       check=true
+      send_rpc_command('/id '..playerId)
     elseif text:find(biz) then
       local _, _, playerId, bizId, timeslet, timesletms, _  = text:match(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества: Бизнес ['..bizId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
-      send_rpc_command('/id '..playerId)
       check=true
+      send_rpc_command('/id '..playerId)
     elseif text:find(car) then
       local _, _, playerId, carname, price, salon  = text:match(car) -- [A] Player[777] купил транспорт по госу (VAZ 2108), цена: $100000, автосалон: Эконом.
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества:\nТранспорт '..carname..' ['..price..']  '..salon..'\n'
       data['embeds'][1]['color']=0xfa0a3e
-      send_rpc_command('/id '..playerId)
       check=true
+      send_rpc_command('/id '..playerId)
     end
 end
 
