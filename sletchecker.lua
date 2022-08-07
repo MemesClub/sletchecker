@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("ќптимизирован код")
-script_version("08.08.2022new1")
+script_version("08.08.2022new2")
 script_properties('Work-in-pause')
 script_url("https://github.com/MemesClub/sletchecker?")
 
@@ -24,10 +24,10 @@ end
 
 local idstr = '%[(%d+)%] (.+) %| ”ровень: (%d+) %| UID: (%d+)' 
 -- [00:39:52] [1] Cursed_Gitlerov | ”ровень: 0 | UID: -1 | packetloss: 0.00 (мобильный лаунчер)
-local house = '(.+)([a-zA-Z_]+)%[(%d+)%] купил дом ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
+local house = '(.+)([a-zA-Z_]+) %[(%d+)%] купил дом ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
 -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
 -- [21:00:08] Beautiful_Nastiness [803] купил дом ID: 774 по гос. цене за 1.88 ms! (old)
-local biz = '(.+)([a-zA-Z_]+)%[(%d+)%] купил бизнес ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
+local biz = '(.+)([a-zA-Z_]+) %[(%d+)%] купил бизнес ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
 local car = '(.+)([a-zA-Z_]+)%[(%d+)%] купил транспорт по госу %((.+)%), цена: (.+), автосалон: (.+)'
 --[01:54:46] [A] Ali_Mortimer[253] купил транспорт по госу (Elegant), цена: $460,000, автосалон: Ёконом.
 
@@ -70,12 +70,15 @@ data['username'] = nickname
 end
 
 function sampev.onServerMessage(color, text)
+    if check then
         if text:find(idstr) and check then
             local playerId, playerName, playerlvl, playerUID = text:match(idstr)
             data['embeds'][1]['description'] =data['embeds'][1]['description']..'»грок: '..playerName..' ['..playerId..']\n”ровень: '..playerlvl..'\nUID: '..playerUID..''
             asyncHttpRequest('POST', url, {headers = {['content-type'] = 'application/json'}, data = u8(encodeJson(data))})  
         end
-    
+        check=false
+        return false
+    end
     if text:find(house) then
       local _, _, playerId, houseId, timeslet, timesletms, _  = text:match(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
       playerId=tonumber(playerId)
