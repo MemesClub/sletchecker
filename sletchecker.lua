@@ -2,9 +2,8 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("Оптимизирован код")
-script_version("08.08.2022new4")
+script_version("08.08.2022new5")
 script_properties('Work-in-pause')
-script_url("https://github.com/MemesClub/sletchecker?")
 
 -- https://github.com/qrlk/moonloader-script-updater
 local enable_autoupdate = true -- false to disable auto-update + disable sending initial telemetry (server, moonloader version, script version, samp nickname, virtual volume serial number)
@@ -23,13 +22,13 @@ if enable_autoupdate then
 end
 
 local idstr = '%[(%d+)%] (.+) %| Уровень: (%d+) %| UID: (%d+)' 
--- [00:39:52] [1] Cursed_Gitlerov | Уровень: 0 | UID: -1 | packetloss: 0.00 (мобильный лаунчер)
-local house = '(.+) (.+) %[(%d+)%] купил дом ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
--- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
--- [21:00:08] Beautiful_Nastiness [803] купил дом ID: 774 по гос. цене за 1.88 ms! (old)
-local biz = '(.+) (.+) %[(%d+)%] купил бизнес ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
-local car = '(.+) (.+)%[(%d+)%] купил транспорт по госу %((.+)%), цена: (.+), автосалон: (.+)'
---[01:54:46] [A] Ali_Mortimer[253] купил транспорт по госу (Elegant), цена: $460,000, автосалон: Эконом.
+-- [00:39:52] [1] Name_Kick | Уровень: 0 | UID: -1 | packetloss: 0.00 (мобильный лаунчер)
+local house = '(.+)([A-Za-z_]+) %[(%d+)%] купил дом ID: (%d+) по гос. цене за (%d+).(%d+)(.+)'
+-- [02:00:08] Liniks_Bur [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
+-- [21:00:08] Test_Asdf [803] купил дом ID: 774 по гос. цене за 1.88 ms! (old)
+local biz = '(.+)([A-Za-z_]+) %[(%d+)%] купил бизнес ID: (%d+) по гос. цене за (%d+).(%d+)(.+)'
+local car = '(.+)([A-Za-z_]+)%[(%d+)%] купил транспорт по госу %((.+)%), цена: (.+), автосалон: (.+).'
+--[01:54:46] [A] Lan_Ok[253] купил транспорт по госу (Elegant), цена: $460,000, автосалон: Эконом.
 
 local encoding = require 'encoding' -- подключаем для корректной отправки русских букв
 encoding.default = 'CP1251'
