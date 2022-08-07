@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("Оптимизирован код")
-script_version("07.08.2022empty")
+script_version("08.08.2022")
 script_properties('Work-in-pause')
 script_url("https://github.com/MemesClub/sletchecker?")
 
@@ -22,9 +22,12 @@ if enable_autoupdate then
     end
 end
 
-local idstr = '%[(%d+)%] (.+) %| Уровень: (%d+) %| UID: (%d+)' -- [00:39:52] [1] Cursed_Gitlerov | Уровень: 0 | UID: -1 | packetloss: 0.00 (мобильный лаунчер)
-local house = '(.+) (.+)%[(%d+)%] купил дом ID: (%d+) по гос. цене за (%d+).(%d+) ms!'
-local biz = '(.+) (.+)%[(%d+)%] купил бизнес ID: (%d+) по гос. цене за (%d+).(%d+) ms!'
+local idstr = '%[(%d+)%] (.+) %| Уровень: (%d+) %| UID: (%d+)' 
+-- [00:39:52] [1] Cursed_Gitlerov | Уровень: 0 | UID: -1 | packetloss: 0.00 (мобильный лаунчер)
+local house = '(.+) (.+)%[(%d+)%] купил дом ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
+-- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
+-- [21:00:08] Beautiful_Nastiness [803] купил дом ID: 774 по гос. цене за 1.88 ms! (old)
+local biz = '(.+) (.+)%[(%d+)%] купил бизнес ID: (%d+) по гос. цене за (%d+).(%d+) (.+)'
 local car = '(.+) (.+)%[(%d+)%] купил транспорт по госу %((.+)%), цена: (.+), автосалон: (.+)'
 
 local encoding = require 'encoding' -- подключаем для корректной отправки русских букв
@@ -77,7 +80,7 @@ function sampev.onServerMessage(color, text)
     end
     
     if text:find(house) then
-      local _, _, playerId, houseId, timeslet, timesletms  = text:match(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
+      local _, _, playerId, houseId, timeslet, timesletms, _  = text:match(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества: Дом ['..houseId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
@@ -87,7 +90,7 @@ function sampev.onServerMessage(color, text)
     end
     
     if text:find(biz) then
-      local _, _, playerId, bizId, timeslet, timesletms  = text:match(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
+      local _, _, playerId, bizId, timeslet, timesletms, _  = text:match(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества: Бизнес ['..bizId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
