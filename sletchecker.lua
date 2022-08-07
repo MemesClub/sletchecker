@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("Оптимизирован код")
-script_version("08.08.2022new")
+script_version("08.08.2022new1")
 script_properties('Work-in-pause')
 script_url("https://github.com/MemesClub/sletchecker?")
 
@@ -70,15 +70,11 @@ data['username'] = nickname
 end
 
 function sampev.onServerMessage(color, text)
-    if check then
         if text:find(idstr) and check then
             local playerId, playerName, playerlvl, playerUID = text:match(idstr)
             data['embeds'][1]['description'] =data['embeds'][1]['description']..'Игрок: '..playerName..' ['..playerId..']\nУровень: '..playerlvl..'\nUID: '..playerUID..''
             asyncHttpRequest('POST', url, {headers = {['content-type'] = 'application/json'}, data = u8(encodeJson(data))})  
         end
-        check=false
-        return false
-    end
     
     if text:find(house) then
       local _, _, playerId, houseId, timeslet, timesletms, _  = text:match(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
