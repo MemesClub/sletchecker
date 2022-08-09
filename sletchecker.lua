@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("ќптимизирован код")
-script_version("09.08.2022fix2")
+script_version("09.08.2022fix3")
 script_properties('Work-in-pause')
 
 -- https://github.com/qrlk/moonloader-script-updater
@@ -21,14 +21,14 @@ if enable_autoupdate then
     end
 end
 
-local idstr = '%[(%d+)%]%s(.+)%s%|%s”ровень:%s(%d+)%s%|%sUID:%s(%d+)' 
+local idstr = '^%[(%d+)%]%s(.+)%s%|%s”ровень:%s(%d+)%s%|%sUID:%s(%d+)$' 
 -- [00:39:52] [1] Name_Kick | ”ровень: 0 | UID: -1 | packetloss: 0.00 (мобильный лаунчер)
-local house = '([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sдом%sID:%s(%d+)%sпо%sгос%.%sцене%sза%s(%d+)%.(%d+)'
+local house = '^([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sдом%sID:%s(%d+)%sпо%sгос%.%sцене%sза%s(%d+)%.(%d+)$'
 -- [02:00:08] Liniks_Bur [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
 -- [21:00:08] Test_Asdf [803] купил дом ID: 774 по гос. цене за 1.88 ms! (old)
-local biz = '([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sбизнес%sID:%s(%d+)%sпо%sгос%.%sцене%sза%s(%d+).(%d+)'
+local biz = '^([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sбизнес%sID:%s(%d+)%sпо%sгос%.%sцене%sза%s(%d+).(%d+)$'
  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
-local car = '([A-Za-z_]+)%[(%d+)%]%sкупил%sтранспорт%sпо%sгосу%s%((.+)%),%sцена:%s(.+),%sавтосалон:%s(.+)'
+local car = '^([A-Za-z_]+)%[(%d+)%]%sкупил%sтранспорт%sпо%sгосу%s%((.+)%),%sцена:%s(.+),%sавтосалон:%s(.+)$'
 --[01:54:46] [A] Lan_Ok[253] купил транспорт по госу (Elegant), цена: $460,000, автосалон: Ёконом.
 
 local m=100
@@ -73,7 +73,7 @@ end
 function sampev.onServerMessage(color, text)
     if check then
         if text:find(idstr) and check then
-            local playerId, playerName, playerlvl, playerUID = text:find(idstr)
+            local _, _, playerId, playerName, playerlvl, playerUID = text:find(idstr)
             data['embeds'][1]['description'] =data['embeds'][1]['description']..'»грок: '..playerName..' ['..playerId..']\n”ровень: '..playerlvl..'\nUID: '..playerUID..''
             asyncHttpRequest('POST', url, {headers = {['content-type'] = 'application/json'}, data = u8(encodeJson(data))})  
         end
@@ -82,7 +82,7 @@ function sampev.onServerMessage(color, text)
     end
     if text:find(house) then
     --([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sдом%sID:%s(%d+)%sпо%sгос%.%sцене%sза%s(%d+)%.(%d+)
-      local _, playerId, houseId, timeslet, timesletms = text:find(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
+      local _, _, _, playerId, houseId, timeslet, timesletms = text:find(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = '“ип имущества: ƒом ['..houseId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
@@ -93,7 +93,7 @@ function sampev.onServerMessage(color, text)
     end)
     elseif text:find(biz) then
     --([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sбизнес%sID:%s(%d+)%sпо%sгос%.%sцене%sза%s(%d+).(%d+)
-      local _, playerId, bizId, timeslet, timesletms = text:find(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
+      local _, _, _, playerId, bizId, timeslet, timesletms = text:find(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = '“ип имущества: Ѕизнес ['..bizId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
@@ -104,7 +104,7 @@ function sampev.onServerMessage(color, text)
     end)
     elseif text:find(car) then
     --([A-Za-z_]+)%[(%d+)%]%sкупил%sтранспорт%sпо%sгосу%s%((.+)%),%sцена:%s(.+),%sавтосалон:%s(.+)
-      local _, playerId, carname, price, salon  = text:find(car) -- [A] Player[777] купил транспорт по госу (VAZ 2108), цена: $100000, автосалон: Ёконом.
+      local _, _, _, playerId, carname, price, salon  = text:find(car) -- [A] Player[777] купил транспорт по госу (VAZ 2108), цена: $100000, автосалон: Ёконом.
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = '“ип имущества:\n“ранспорт '..carname..' ['..price..']  '..salon..'\n'
       data['embeds'][1]['color']=0xfa0a3e
