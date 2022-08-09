@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("Оптимизирован код")
-script_version("09.08.2022fix1")
+script_version("09.08.2022fix2")
 script_properties('Work-in-pause')
 
 -- https://github.com/qrlk/moonloader-script-updater
@@ -31,6 +31,7 @@ local biz = '([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sбизнес%sID:%s(%d+)%sпо%sгос%.%sцен
 local car = '([A-Za-z_]+)%[(%d+)%]%sкупил%sтранспорт%sпо%sгосу%s%((.+)%),%sцена:%s(.+),%sавтосалон:%s(.+)'
 --[01:54:46] [A] Lan_Ok[253] купил транспорт по госу (Elegant), цена: $460,000, автосалон: Эконом.
 
+local m=100
 local encoding = require 'encoding' -- подключаем для корректной отправки русских букв
 encoding.default = 'CP1251'
 u8 = encoding.UTF8
@@ -86,7 +87,10 @@ function sampev.onServerMessage(color, text)
       data['embeds'][1]['description'] = 'Тип имущества: Дом ['..houseId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
       check=true
-      send_rpc_command('/id '..playerId)
+      lua_thread.create(function()
+        wait(m)
+        send_rpc_command('/id '..playerId)
+    end)
     elseif text:find(biz) then
     --([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sбизнес%sID:%s(%d+)%sпо%sгос%.%sцене%sза%s(%d+).(%d+)
       local _, playerId, bizId, timeslet, timesletms = text:find(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
@@ -94,7 +98,10 @@ function sampev.onServerMessage(color, text)
       data['embeds'][1]['description'] = 'Тип имущества: Бизнес ['..bizId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
       check=true
-      send_rpc_command('/id '..playerId)
+      lua_thread.create(function()
+        wait(m)
+        send_rpc_command('/id '..playerId)
+    end)
     elseif text:find(car) then
     --([A-Za-z_]+)%[(%d+)%]%sкупил%sтранспорт%sпо%sгосу%s%((.+)%),%sцена:%s(.+),%sавтосалон:%s(.+)
       local _, playerId, carname, price, salon  = text:find(car) -- [A] Player[777] купил транспорт по госу (VAZ 2108), цена: $100000, автосалон: Эконом.
@@ -102,7 +109,10 @@ function sampev.onServerMessage(color, text)
       data['embeds'][1]['description'] = 'Тип имущества:\nТранспорт '..carname..' ['..price..']  '..salon..'\n'
       data['embeds'][1]['color']=0xfa0a3e
       check=true
-      send_rpc_command('/id '..playerId)
+      lua_thread.create(function()
+        wait(m)
+        send_rpc_command('/id '..playerId)
+    end)
     end
 end
 
