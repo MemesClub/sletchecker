@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("Оптимизирован код")
-script_version("09.08.2022")
+script_version("09.08.2022fix1")
 script_properties('Work-in-pause')
 
 -- https://github.com/qrlk/moonloader-script-updater
@@ -80,21 +80,24 @@ function sampev.onServerMessage(color, text)
         return false
     end
     if text:find(house) then
-      local _, _, playerId, houseId, timeslet, timesletms, _  = text:find(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
+    --([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sдом%sID:%s(%d+)%sпо%sгос%.%sцене%sза%s(%d+)%.(%d+)
+      local _, playerId, houseId, timeslet, timesletms = text:find(house)  -- [02:00:08] Liniks_Burton [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества: Дом ['..houseId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
       check=true
       send_rpc_command('/id '..playerId)
     elseif text:find(biz) then
-      local _, _, playerId, bizId, timeslet, timesletms, _  = text:find(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
+    --([A-Za-z_]+)%s?%[(%d+)%]%sкупил%sбизнес%sID:%s(%d+)%sпо%sгос%.%sцене%sза%s(%d+).(%d+)
+      local _, playerId, bizId, timeslet, timesletms = text:find(biz)  -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества: Бизнес ['..bizId..'] ('..timeslet.. '.' ..timesletms..'ms)\n'
       data['embeds'][1]['color']=0x9b59b6
       check=true
       send_rpc_command('/id '..playerId)
     elseif text:find(car) then
-      local _, _, playerId, carname, price, salon  = text:find(car) -- [A] Player[777] купил транспорт по госу (VAZ 2108), цена: $100000, автосалон: Эконом.
+    --([A-Za-z_]+)%[(%d+)%]%sкупил%sтранспорт%sпо%sгосу%s%((.+)%),%sцена:%s(.+),%sавтосалон:%s(.+)
+      local _, playerId, carname, price, salon  = text:find(car) -- [A] Player[777] купил транспорт по госу (VAZ 2108), цена: $100000, автосалон: Эконом.
       playerId=tonumber(playerId)
       data['embeds'][1]['description'] = 'Тип имущества:\nТранспорт '..carname..' ['..price..']  '..salon..'\n'
       data['embeds'][1]['color']=0xfa0a3e
