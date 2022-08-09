@@ -2,7 +2,7 @@ require "lib.moonloader"
 
 script_authors("Memes & Hatori")
 script_description("Оптимизирован код")
-script_version("09.08.2022fix4")
+script_version("09.08.2022fix6")
 script_properties('Work-in-pause')
 
 -- https://github.com/qrlk/moonloader-script-updater
@@ -21,14 +21,14 @@ if enable_autoupdate then
     end
 end
 
-local idstr = '^%[(%d+)%] (.+) | Уровень: (%d+) | UID: (%d+)$' 
+local idstr = '%[(%d+)%] (.+) | Уровень: (%d+) | UID: (%d+)' 
 -- [00:39:52] [1] Name_Kick | Уровень: 0 | UID: -1 | packetloss: 0.00 (мобильный лаунчер)
-local house = '^([A-Za-z_]+) %[(%d+)%] купил дом ID: (%d+) по гос%. цене за (%d+)%.(%d+) ms$'
+local house = '([A-Za-z_]+) %[(%d+)%] купил дом ID: (%d+) по гос%. цене за (%d+)%.(%d+) ms'
 -- [02:00:08] Liniks_Bur [3] купил дом ID: 481 по гос. цене за 1.19 ms! (old)
 -- [21:00:08] Test_Asdf [803] купил дом ID: 774 по гос. цене за 1.88 ms! (old)
-local biz = '^([A-Za-z_]+) %[(%d+)%] купил бизнес ID: (%d+) по гос%. цене за (%d+).(%d+) ms$'
- -- [04:00:24] Cristiano_Depressed [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
-local car = '^([A-Za-z_]+)%[(%d+)%] купил транспорт по госу %((.+)%), цена: (.+), автосалон: (.+)%.$'
+local biz = '([A-Za-z_]+) %[(%d+)%] купил бизнес ID: (%d+) по гос%. цене за (%d+).(%d+) ms'
+ -- [04:00:24] Bot_Govnokoder [179] купил бизнес ID: 93 по гос. цене за 2.84 ms! (old)
+local car = '([A-Za-z_]+)%[(%d+)%] купил транспорт по госу %((.+)%), цена: (.+), автосалон: (.+)%.'
 --[01:54:46] [A] Lan_Ok[253] купил транспорт по госу (Elegant), цена: $460,000, автосалон: Эконом.
 
 local m=100
